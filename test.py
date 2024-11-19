@@ -28,35 +28,3 @@ for i, state in enumerate(intermediate_states):
     print(f"Step {i + 1}: State = {state}")
     print(f"Step {i + 1}: {intermediate_gates[i].name}")
     print(f"Parallelism = {parallel_states}\n")
-
-
-"""
-
-# Convert the circuit to a DAG
-dag = circuit_to_dag(qc)
-
-print(dag)
-
-# Print DAG nodes and edges
-for node in dag.topological_op_nodes():  # Only iterate over operation nodes
-    print(f"Node: {node.op.name}, Qubits: {[qubit._index for qubit in node.qargs]}")
-
-
-
-# Create a graph from the DAG
-G = nx.DiGraph()
-
-# Add nodes and edges
-for node in dag.topological_nodes():
-    G.add_node(str(node), label=node.name)
-    for succ in dag.successors(node):
-        G.add_edge(str(node), str(succ))
-
-# Plot the graph
-pos = nx.spring_layout(G)
-nx.draw(G, pos, with_labels=True, node_color="lightblue", node_size=2000)
-labels = nx.get_node_attributes(G, 'label')
-nx.draw_networkx_labels(G, pos, labels=labels)
-plt.show()
-
-"""
