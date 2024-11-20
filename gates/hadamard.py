@@ -1,3 +1,5 @@
+import numpy as np
+
 def HAD(qubit, prev_states, num_states, layer, new_layer, old_layer):
     edges = []
     
@@ -43,20 +45,27 @@ def HAD(qubit, prev_states, num_states, layer, new_layer, old_layer):
             # calculate the target state index based on stride
             target_state = i ^ stride  # XOR to find the "target" in the superposition
 
-            # fix for XOR wraparound
-            if target_state >= i:
+            # Combine amplitudes and phases from both source states
+            contribution = (
+                old_layer["amplitudes"][i] * np.exp(1j * old_layer["phases"][i]) +
+                old_layer["amplitudes"][target_state] * np.exp(1j * old_layer["phases"][target_state])
+            )
+            # If the contribution is non-zero, create an edge
+            if abs(contribution) > 1e-10:  # Account for floating-point precision
                 join_edge = {
                     "start": (layer, i),
-                    "end": (layer + 1, i),
-                    "amplitude": old_layer["amplitudes"][i],
-                    "phase": old_layer["phases"][i]
+                    "end": (layer + 1, target_state),
+                    "amplitude": abs(contribution),
+                    "phase": np.angle(contribution),  # Keep resulting phase
+                    "old_phase": old_layer["phases"][i]
                 }
             else:
                 join_edge = {
                     "start": (layer, i),
                     "end": (layer + 1, target_state),
                     "amplitude": old_layer["amplitudes"][target_state],
-                    "phase": old_layer["phases"][target_state]
+                    "phase": old_layer["phases"][target_state],
+                    "old_phase": old_layer["phases"][target_state]
                 }
             edges.append(join_edge)
     return edges

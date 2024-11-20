@@ -21,11 +21,8 @@ def visualize_quantum_parallelism(data):
         amplitudes = layer['amplitudes']
         phases = layer['phases']
 
-        print("Amplitudes for layers")
-        print(phases)
-
         for state_idx, (amp, phase) in enumerate(zip(amplitudes, phases)):
-            print(f"Amplitude: {amp}, Phase: {phase}")
+            #print(f"Amplitude: {amp}, Phase: {phase}")
             # hide amplitudes that are near zero for now...
             if (amp < 1e-6):
                 continue
@@ -81,21 +78,24 @@ def visualize_quantum_parallelism(data):
     fig.write_html("quantum" + 'plot.html', auto_open=True)
 
 
-def map_amplitude_to_width(amplitude, min_width=0.5, max_width=20, factor=4):
+def map_amplitude_to_width(amplitude, min_width=0.001, max_width=10):
     """
-    Maps an amplitude (0 to 1) to a line width using an exponential scaling.
+    Maps an amplitude (0 to 1) to a line width using a linear scaling.
     
     Parameters:
         amplitude (float): The amplitude value between 0 and 1.
         min_width (float): The minimum line width for visibility.
         max_width (float): The maximum line width.
-        factor (float): Controls the steepness of the scaling.
     
     Returns:
         float: The scaled line width.
     """
-    scaled_width = (np.exp(factor * amplitude) - 1) / (np.exp(factor) - 1)
-    return min_width + scaled_width * (max_width - min_width)
+    # Ensure amplitude stays in the range [0, 1]
+    amplitude = max(0, min(1, amplitude))
+    
+    # Perform linear interpolation
+    return min_width + amplitude * (max_width - min_width)
+
 
 
 import json
