@@ -1,6 +1,10 @@
 import plotly.graph_objects as go
 import numpy as np
 
+# Configuration booleans
+SHOW_VERTEX_TEXT = True  # Toggle text on/off for vertices
+SHOW_HIERARCHY = False  # Toggle the legend (hierarchy on the right)
+
 def visualize_quantum_parallelism(data):
     layers = data['layers']
     edges = data['edges']
@@ -8,7 +12,6 @@ def visualize_quantum_parallelism(data):
     # Dynamically generate computational basis states
     num_states = max(len(layer['amplitudes']) for layer in layers)  # Find max number of states
     computational_basis = [f"|{bin(i)[2:].zfill(int(np.log2(num_states)))}⟩" for i in range(num_states)]
-
 
     # Prepare Plotly figure
     fig = go.Figure()
@@ -18,7 +21,12 @@ def visualize_quantum_parallelism(data):
         amplitudes = layer['amplitudes']
         phases = layer['phases']
 
+        print("Amplitudes for layers")
+        print(phases)
+
         for state_idx, (amp, phase) in enumerate(zip(amplitudes, phases)):
+            print(f"Amplitude: {amp}, Phase: {phase}")
+            # hide amplitudes that are near zero for now...
             if (amp < 1e-6):
                 continue
 
@@ -27,8 +35,9 @@ def visualize_quantum_parallelism(data):
                 x=[layer_idx],  # Layer position on x-axis
                 y=[state_idx],  # Computational basis state index on y-axis
                 z=[phase],  # Phase value on z-axis
-                mode='markers+text',
-                marker=dict(size=5, color=amp, colorscale='Viridis', opacity=0.8),
+
+                mode='markers'+ ('+text' if SHOW_VERTEX_TEXT else ''),
+                marker=dict(size=5, color='black', opacity=0.8),
                 text=[f"{label}<br>amp={amp:.2f}<br>phase={phase:.2f}"],
                 textposition="top center",
                 name=f"Layer {layer_idx}"
@@ -40,13 +49,19 @@ def visualize_quantum_parallelism(data):
         end = edge['end']
         amplitude = edge['amplitude']
         phase = edge['phase']
+        old_phase = edge['old_phase']
+
+        # Map amplitude to line thickness (closer to 1 means thicker)
+        line_width = map_amplitude_to_width(amplitude)
 
         fig.add_trace(go.Scatter3d(
             x=[start[0], end[0]],  # Start and end layer positions on x-axis
             y=[start[1], end[1]],  # Start and end computational basis indices on y-axis
-            z=[0, 0],  # Assuming phase difference shown on vertices, so edge z=0
+
+            # TODO: Fix so it gets the previous phase value to link
+            z=[old_phase, phase],
             mode='lines',
-            line=dict(width=amplitude * 5, color='blue' if phase == 0 else 'red'),  # Color by phase
+            line=dict(width=line_width, color='blue' if phase == 0 else 'red'),  # Color by phase
             name=f"Edge ({start} -> {end})"
         ))
 
@@ -60,10 +75,27 @@ def visualize_quantum_parallelism(data):
             zaxis_title="Phase",
         ),
         title="Quantum Parallelism Visualization",
+        showlegend=SHOW_HIERARCHY  # Toggle hierarchy visibility
     )
 
-    #fig.show()
     fig.write_html("quantum" + 'plot.html', auto_open=True)
+
+
+def map_amplitude_to_width(amplitude, min_width=0.5, max_width=20, factor=4):
+    """
+    Maps an amplitude (0 to 1) to a line width using an exponential scaling.
+    
+    Parameters:
+        amplitude (float): The amplitude value between 0 and 1.
+        min_width (float): The minimum line width for visibility.
+        max_width (float): The maximum line width.
+        factor (float): Controls the steepness of the scaling.
+    
+    Returns:
+        float: The scaled line width.
+    """
+    scaled_width = (np.exp(factor * amplitude) - 1) / (np.exp(factor) - 1)
+    return min_width + scaled_width * (max_width - min_width)
 
 
 import json
