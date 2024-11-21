@@ -1,9 +1,9 @@
-from gates.hadamard import HAD
 from gates.newhad import HAD_NEW
 from gates.pauli_x import NOT
 from gates.crot import CROT
+from gates.swap import SWAP
 
-from circle_notation import QubitSystem
+from visualization.circle_notation import QubitSystem
 
 def visualize(vector, n = 3):
     # initialize with n qubits
@@ -24,22 +24,21 @@ import json
 qc = QuantumCircuit(3)
 qc.x(1)
 
-#qc.h(2) # HAD on most significant qubit
-#qc.cp(np.pi/2, 1, 2) # CROT qubit 1 to qubit 2, distance 1
-#qc.cp(np.pi/4, 0, 2) # CROT qubit 2 to qubit 0, distance 2
+qc.h(2) # HAD on most significant qubit
+qc.cp(np.pi/2, 1, 2) # CROT qubit 1 to qubit 2, distance 1
+qc.cp(np.pi/4, 0, 2) # CROT qubit 2 to qubit 0, distance 2
 # Second block
-#qc.h(1) # HAD on second most significant qubit
-#qc.cp(np.pi/2, 0, 1) # CROT qubit 0 to qubit 1, distance 1
+qc.h(1) # HAD on second most significant qubit
+qc.cp(np.pi/2, 0, 1) # CROT qubit 0 to qubit 1, distance 1
 # Last block
-#qc.h(0) # HAD on least significant qubit
-#qc.swap(0,2) # SWAP qubit 0 and qubit 2
-
+qc.h(0) # HAD on least significant qubit
+qc.swap(0,2) # SWAP qubit 0 and qubit 2
 
 # Initialize the state vector
 state = Statevector.from_int(0, dims=2**qc.num_qubits)  # Initial state |00>
 
 # Initialize visualization data
-visualization_data = {"layers": [], "edges": []}
+visualization_data = {"layers": [], "edges": [], "gates": []}
 
 # Starting layer (single vertex for |0>)
 visualization_data["layers"].append({
@@ -49,16 +48,19 @@ visualization_data["layers"].append({
 })
 
 # Track mapping of current states (index in statevector) to layer vertices
-previous_states = []
+previous_states = [0]   # previous state is prepped as 0
 old_layer = {"layer": 0, "amplitudes": [1.0], "phases": [0.0]}
 
 new_prev_state = state.data
 print("begining state:", new_prev_state)
 
-# Evolve the state step-by-step
+# evolve the state step-by-step
 for layer, instruction in enumerate(qc.data):
-    gate = instruction.operation  # Extract the operation (gate)
+    # extract the operation (gate)
+    gate = instruction.operation
     print("Step Layer", layer, "gate", gate.name)
+    # add gate name to list
+    visualization_data["gates"].append(gate.name)
 
     # get target qubits
     qubits = [q._index for q in instruction.qubits]
@@ -85,14 +87,15 @@ for layer, instruction in enumerate(qc.data):
     # EDGE LOGIC
     if (gate.name == "h"):
         print("Applying HAD Gate")
-        #new_edges = HAD(qubits, previous_states, num_states, layer, new_layer, old_layer)
         new_edges = HAD_NEW(qubits, new_prev_state, layer, state.data, phases)
     if (gate.name == "x"):
         print("Applying NOT Gate")
         new_edges = NOT(qubits, previous_states, layer, amplitudes, phases, old_layer)
     if (gate.name == "cp"):
         print("Applying CROT Gate")
-        new_edges = CROT(qubits, previous_states, layer, amplitudes, phases, old_layer)
+        new_edges = CROT(previous_states, layer, amplitudes, phases, old_layer)
+    if (gate.name == "swap"):
+        new_edges = SWAP(qubits, previous_states, layer, amplitudes, phases, old_layer)
 
     visualization_data["layers"].append(new_layer)
 

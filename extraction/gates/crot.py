@@ -1,9 +1,8 @@
-def CROT(qubits, prev_states, layer, amplitudes, phases, old_layer):
+def CROT(prev_states, layer, amplitudes, phases, old_layer):
     """
     Visualize the CROT (Controlled Rotation) gate using precomputed phases.
 
     Args:
-        qubits: Tuple indicating the control and target qubits
         prev_states: List of current states (indices).
         layer: Current layer index.
         amplitudes: List of amplitudes for the states.

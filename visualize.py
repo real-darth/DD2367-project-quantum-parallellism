@@ -2,7 +2,6 @@ import plotly.graph_objects as go
 import numpy as np
 
 # Configuration booleans
-SHOW_VERTEX_TEXT = True  # Toggle text on/off for vertices
 SHOW_HIERARCHY = False  # Toggle the legend (hierarchy on the right)
 
 def visualize_quantum_parallelism(data):
@@ -33,7 +32,7 @@ def visualize_quantum_parallelism(data):
                 y=[state_idx],  # Computational basis state index on y-axis
                 z=[phase],  # Phase value on z-axis
 
-                mode='markers'+ ('+text' if SHOW_VERTEX_TEXT else ''),
+                mode='markers',  # Default to markers only (no text)
                 marker=dict(size=5, color='black', opacity=0.8),
                 text=[f"{label}<br>amp={amp:.2f}<br>phase={phase:.2f}"],
                 textposition="top center",
@@ -54,9 +53,8 @@ def visualize_quantum_parallelism(data):
         fig.add_trace(go.Scatter3d(
             x=[start[0], end[0]],  # Start and end layer positions on x-axis
             y=[start[1], end[1]],  # Start and end computational basis indices on y-axis
-
-            # TODO: Fix so it gets the previous phase value to link
-            z=[old_phase, phase],
+            z=[old_phase, phase],  # Start and end based on phase
+            opacity=amplitude,
             mode='lines',
             line=dict(width=line_width, color='blue' if phase == 0 else 'red'),  # Color by phase
             name=f"Edge ({start} -> {end})"
@@ -75,10 +73,55 @@ def visualize_quantum_parallelism(data):
         showlegend=SHOW_HIERARCHY  # Toggle hierarchy visibility
     )
 
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                buttons=list([
+                    dict(
+                        args=[{"mode": ["markers"]}, get_vertex_trace_indices(fig)],  # Hide text
+                        label="False",
+                        method="restyle"
+                    ),
+                    dict(
+                        args=[{"mode": ["markers+text"]},  get_vertex_trace_indices(fig)],  # Show text
+                        label="True",
+                        method="restyle"
+                    )
+                ]),
+                type = "buttons",
+                direction="right",
+                pad={"r": 10, "t": 10},
+                showactive=True,
+                x=0.05,
+                xanchor="left",
+                y=1,
+                yanchor="top"
+            ),
+        ]
+    )
+
+    fig.update_layout(
+    annotations=[
+        dict(text="Toggle<br>Text", x=0, xref="paper", y=0.99,
+                             yref="paper", showarrow=False),
+    ])
+
+    # Fix camera as orthographic
+    fig.update_layout(
+    scene=dict(
+        camera=dict(
+            projection=dict(
+                type='orthographic'  # Use 'orthographic' for a flattened view
+            ),
+            eye=dict(x=0, y=0, z=1)  # Adjust camera position (can be modified for different views)
+            )
+        )
+    )
+
     fig.write_html("quantum" + 'plot.html', auto_open=True)
 
 
-def map_amplitude_to_width(amplitude, min_width=0.001, max_width=10):
+def map_amplitude_to_width(amplitude, min_width=0.01, max_width=15):
     """
     Maps an amplitude (0 to 1) to a line width using a linear scaling.
     
@@ -96,6 +139,8 @@ def map_amplitude_to_width(amplitude, min_width=0.001, max_width=10):
     # Perform linear interpolation
     return min_width + amplitude * (max_width - min_width)
 
+def get_vertex_trace_indices(fig):
+    return [i for i, trace in enumerate(fig.data) if trace.name.startswith('Layer')]
 
 
 import json

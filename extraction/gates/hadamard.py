@@ -1,6 +1,6 @@
 import numpy as np
 
-def HAD_NEW(qubit, prev_state, layer, new_state, phases, threshold=1e-10):
+def HAD(qubit, prev_state, layer, new_state, phases, threshold=1e-10):
     edges = []
     target_qubit = qubit[0]
 

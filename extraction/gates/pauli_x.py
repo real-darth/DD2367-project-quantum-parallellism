@@ -28,10 +28,12 @@ def NOT(qubit, prev_states, layer, amplitudes, phases, old_layer):
         edge = {
             "start": (layer, i),
             "end": (layer + 1, target_state),
-            "amplitude": amplitudes[i],
+            "amplitude": amplitudes[target_state],
             "phase": phases[target_state],
             "old_phase": old_layer["phases"][i]
         }
+
+        print(edge)
 
         edges.append(edge)
 
