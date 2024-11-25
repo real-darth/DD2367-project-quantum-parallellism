@@ -15,8 +15,8 @@ def SWAP(qubits, prev_state, layer, amplitudes, phases, old_layer, threshold=1e-
         # Swap the bits to determine the new index
         swapped_index = i ^ ((bit1 ^ bit2) << q1) ^ ((bit1 ^ bit2) << q2)
         
-        if amplitudes[i] > threshold:
-            print(f"State {i}: Amplitude {prev_state[i]} -> Swapped State {swapped_index}")
+        #if amplitudes[i] > threshold:
+            #print(f"State {i}: Amplitude {prev_state[i]} -> Swapped State {swapped_index}")
         
         if amplitudes[i] > threshold:  # Check if the previous state is significant
             # Preserve the amplitude (SWAP does not change amplitudes or phases)

@@ -10,8 +10,8 @@ def HAD(qubit, prev_state, layer, new_state, phases, threshold=1e-10):
         target_zero = i  # Target for |0>
         target_one = i ^ (1 << target_qubit)  # Target for |1> (bit flip on target qubit)
         
-        if np.abs(prev_state[i]) > threshold:
-            print(f"State {i}: Amplitude {prev_state[i]} -> Targets {target_zero}, {target_one}")
+        #if np.abs(prev_state[i]) > threshold:
+        #    print(f"State {i}: Amplitude {prev_state[i]} -> Targets {target_zero}, {target_one}")
 
         if np.abs(prev_state[i]) > threshold:  # Check if the previous state is significant
             # Amplitudes for the resulting states

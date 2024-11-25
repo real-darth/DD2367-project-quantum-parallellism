@@ -24,35 +24,42 @@ class QubitSystem:
 
     # Use Circle Notation
     def viz2(self):
-        # calculate amplitude and phase
-        # calculate the amplitude and phase of the states
+        # Calculate amplitude and phase
         self.prob_qubit = np.absolute(self.qubit)
         self.phase_qubit = np.angle(self.qubit)
-        # viz par
-        rows = int(math.ceil(self.n_states / 8.0))
-        cols = min(self.n_states, 8)
-        fig, axs = plt.subplots(rows, cols)
+        
+        # Determine number of rows and columns
+        cols = 8  # Maximum columns per row
+        rows = int(math.ceil(self.n_states / cols))
+        
+        # Adjust figure size dynamically based on the number of rows and columns
+        fig, axs = plt.subplots(rows, cols, figsize=(cols * 2, rows * 2), squeeze=False)
+        axs = axs.flatten()  # Flatten for easier indexing
 
-        #cols_limit = cols / 2
-        #temp = int(cols_limit)
-
-        for col in range(cols):
-            # amplitude area
-            circleExt = matplotlib.patches.Circle((0.5, 0.5), 0.5, color='gray',alpha=0.1)
-            circleInt = matplotlib.patches.Circle((0.5, 0.5), self.prob_qubit[col]/2, color='b',alpha=0.3)
+        for col in range(self.n_states):
+            # Outer circle (full state representation)
+            circleExt = patches.Circle((0.5, 0.5), 0.5, color='gray', alpha=0.1)
             axs[col].add_patch(circleExt)
+
+            # Inner circle (amplitude-based)
+            circleInt = patches.Circle((0.5, 0.5), self.prob_qubit[col] / 2, color='b', alpha=0.3)
             axs[col].add_patch(circleInt)
-            axs[col].set_aspect('equal')
 
-            #if (col >= cols_limit):
-            #    state_number = "| -" + str(temp) + ">"
-            #    temp -= 1
-            #else:
-            state_number = "|" + str(col) + ">"
-
+            # Title with state name
+            state_number = f"|{col}>"
             axs[col].set_title(state_number)
-            xl = [0.5, 0.5 + 0.5*self.prob_qubit[col]*math.cos(self.phase_qubit[col] + np.pi/2)]
-            yl = [0.5, 0.5 + 0.5*self.prob_qubit[col]*math.sin(self.phase_qubit[col] + np.pi/2)]
-            axs[col].plot(xl,yl,'r')
+
+            # Draw phase line
+            xl = [0.5, 0.5 + 0.5 * self.prob_qubit[col] * np.cos(self.phase_qubit[col] + np.pi / 2)]
+            yl = [0.5, 0.5 + 0.5 * self.prob_qubit[col] * np.sin(self.phase_qubit[col] + np.pi / 2)]
+            axs[col].plot(xl, yl, 'r')
+
+            axs[col].set_aspect('equal')
             axs[col].axis('off')
+        
+        # Hide unused axes
+        for col in range(self.n_states, len(axs)):
+            axs[col].axis('off')
+
+        plt.tight_layout()  # Prevent overlap
         plt.show()

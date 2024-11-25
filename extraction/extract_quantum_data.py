@@ -5,6 +5,7 @@ from .gates.hadamard import HAD
 from .gates.pauli_x import NOT
 from .gates.crot import CROT
 from .gates.swap import SWAP
+from .gates.control_control_z import CCZ
 
 from visualization.circle_notation import QubitSystem
 
@@ -40,6 +41,7 @@ def extract_quantum_data(qc):
     # Process each instruction in the circuit
     for layer, instruction in enumerate(qc.data):
         gate = instruction.operation
+        print("Running on gate", gate.name)
         visualization_data["gates"].append(gate.name)
 
         qubits = [q._index for q in instruction.qubits]
@@ -64,6 +66,8 @@ def extract_quantum_data(qc):
             new_edges = CROT(previous_states, layer, amplitudes, phases, old_layer)
         elif gate.name == "swap":
             new_edges = SWAP(qubits, previous_states, layer, amplitudes, phases, old_layer)
+        elif gate.name == "ccz":
+            new_edges = CCZ(qubits, previous_states, layer, state.data, amplitudes, phases)
 
         visualization_data["layers"].append(new_layer)
         visualization_data["edges"].extend(new_edges)
@@ -72,7 +76,9 @@ def extract_quantum_data(qc):
         old_layer = new_layer
         new_prev_state = state.data
 
+        print("Amplitdues", amplitudes)
+
     statevector = Statevector(state)
-    visualize(statevector.datam, qc.num_qubits)
+    visualize(statevector.data, qc.num_qubits)
 
     return visualization_data

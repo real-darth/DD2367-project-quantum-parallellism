@@ -1,56 +1,64 @@
 from .utils import get_vertex_trace_indices
-
 def add_ui_elements(fig, computational_basis, gate_labels, show_hierarchy=False):
+    num_gates = len(gate_labels)  # number of gates on the X-axis
+    num_states = len(computational_basis)  # number of quantum states on the Y-axis
+    
+    # Calculate the aspect ratio based on the number of gates and states
+    # This will ensure that the X-axis is stretched properly
+    aspect_ratio = {
+        'x': num_gates * 2 / (num_states),  # Control how stretched the X-axis should be
+        'y': 1,  # Keep the Y-axis aspect ratio normal
+        'z': 1   # Same for Z-axis
+    }
 
-    # update layout for scene, basic info
+    # Update layout for scene, basic info
     fig.update_layout(
         scene=dict(
             xaxis_title="Gate",
-            # replace with gate names
             xaxis=dict(
-                tickvals=list(range(len(gate_labels))),
-                ticktext=gate_labels
+                tickvals=list(range(num_gates)),
+                ticktext=gate_labels,
+                range=[0, num_gates]  # Force the range of the X-axis to match number of gates
             ),
             yaxis_title="Quantum State",
-            # replace with binary state
             yaxis=dict(
-                tickvals=list(range(len(computational_basis))),
+                tickvals=list(range(num_states)),
                 ticktext=computational_basis
             ),
             zaxis_title="Phase",
+            aspectmode='manual',  # Use custom aspect ratio
+            aspectratio=aspect_ratio  # Apply the custom aspect ratio
         ),
         title="Quantum Parallelism Visualization",
         showlegend=show_hierarchy
     )
 
-    # add toggle buttons for vertex text
+    # Add toggle buttons for vertex text
     fig.update_layout(
-        updatemenus=[
-            dict(
-                buttons=list([
-                    dict(
-                        args=[{"mode": ["markers"]}, get_vertex_trace_indices(fig)],
-                        label="Hide Text",
-                        method="restyle"
-                    ),
-                    dict(
-                        args=[{"mode": ["markers+text"]}, get_vertex_trace_indices(fig)],
-                        label="Show Text",
-                        method="restyle"
-                    )
-                ]),
-                direction="right",
-                pad={"r": 10, "t": 10},
-                showactive=True,
-                x=0.05,
-                xanchor="left",
-                y=1,
-                yanchor="top"
-            )
-        ]
+        updatemenus=[{
+            'buttons': [
+                {
+                    'args': [{"mode": ["markers"]}, get_vertex_trace_indices(fig)],
+                    'label': "Hide Text",
+                    'method': "restyle"
+                },
+                {
+                    'args': [{"mode": ["markers+text"]}, get_vertex_trace_indices(fig)],
+                    'label': "Show Text",
+                    'method': "restyle"
+                }
+            ],
+            'direction': "right",
+            'pad': {"r": 10, "t": 10},
+            'showactive': True,
+            'x': 0.05,
+            'xanchor': "left",
+            'y': 1,
+            'yanchor': "top"
+        }]
     )
 
-    # add annotations to UI elements
+    # Add annotations to UI elements
     fig.update_layout(
         annotations=[
             dict(text="Vertex<br>Text", x=0, xref="paper", y=1.00,
@@ -58,7 +66,7 @@ def add_ui_elements(fig, computational_basis, gate_labels, show_hierarchy=False)
         ]
     )
 
-    # set camera as orthographic
+    # Set camera to orthographic
     fig.update_layout(
         scene=dict(
             camera=dict(
@@ -67,4 +75,5 @@ def add_ui_elements(fig, computational_basis, gate_labels, show_hierarchy=False)
             )
         )
     )
+
     return fig

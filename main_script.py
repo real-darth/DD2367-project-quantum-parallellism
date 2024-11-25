@@ -19,8 +19,8 @@ if __name__ == "__main__":
     # extract visualization data
     data = extract_quantum_data(qc)
 
-    if True:
-        exit()
+    #if True:
+    #    exit()
 
     # save data to JSON
     #with open("visualization_data.json", "w") as f:
