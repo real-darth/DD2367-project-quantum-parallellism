@@ -1,4 +1,6 @@
 from .utils import get_vertex_trace_indices
+import plotly.graph_objects as go
+
 def add_ui_elements(fig, computational_basis, gate_labels, show_hierarchy=False):
     num_gates = len(gate_labels)  # number of gates on the X-axis
     num_states = len(computational_basis)  # number of quantum states on the Y-axis
@@ -6,8 +8,8 @@ def add_ui_elements(fig, computational_basis, gate_labels, show_hierarchy=False)
     # Calculate the aspect ratio based on the number of gates and states
     # This will ensure that the X-axis is stretched properly
     aspect_ratio = {
-        'x': num_gates * 2 / (num_states),  # Control how stretched the X-axis should be
-        'y': 1,  # Keep the Y-axis aspect ratio normal
+        'x': num_gates * 3 / (num_states),  # Control how stretched the X-axis should be
+        'y': 1.2,  # Keep the Y-axis aspect ratio normal
         'z': 1   # Same for Z-axis
     }
 
@@ -70,8 +72,9 @@ def add_ui_elements(fig, computational_basis, gate_labels, show_hierarchy=False)
     fig.update_layout(
         scene=dict(
             camera=dict(
-                projection=dict(type='orthographic'),
-                eye=dict(x=0, y=0, z=1)
+                projection=dict(type='orthographic'),   # makes depth flat
+                eye=dict(x=0, y=0, z=1),                # view from above
+                up=dict(x=0, y=1, z=0)                  # rotate the view 90 degrees to the right
             )
         )
     )

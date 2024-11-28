@@ -1,6 +1,7 @@
 import numpy as np
 
 def SWAP(qubits, prev_state, layer, amplitudes, phases, old_layer, threshold=1e-10):
+    print("SWAP TIME!!")
     edges = []
     # The two qubits being swapped
     q1 = qubits[0]
@@ -18,7 +19,9 @@ def SWAP(qubits, prev_state, layer, amplitudes, phases, old_layer, threshold=1e-
         #if amplitudes[i] > threshold:
             #print(f"State {i}: Amplitude {prev_state[i]} -> Swapped State {swapped_index}")
         
+        print("Ampliutude", i, "is", amplitudes[i])
         if amplitudes[i] > threshold:  # Check if the previous state is significant
+            print("THIS IS A TEST")
             # Preserve the amplitude (SWAP does not change amplitudes or phases)
             amplitude = amplitudes[i]
             phase = phases[swapped_index]

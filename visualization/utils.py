@@ -1,17 +1,19 @@
-def map_amplitude_to_width(amplitude, min_width=0.01, max_width=15):
+VISUALIZATION_THRESHOLD = 0.01 #1e-6
+
+def scale_amplitude_to_size(amplitude, min_size, max_size):
     """
-    Maps an amplitude (0 to 1) to a line width using a linear scaling.
+    Scale an amplitude (0 to 1) to a size using a linear scaling.
     
     Parameters:
         amplitude (float): The amplitude value between 0 and 1.
-        min_width (float): The minimum line width for visibility.
-        max_width (float): The maximum line width.
+        min_width (float): The minimum value.
+        max_width (float): The maximum value.
     
     Returns:
-        float: The scaled line width.
+        float: The scaled size.
     """
     # perform linear interpolation
-    return min_width + amplitude * (max_width - min_width)
+    return min_size + amplitude * (max_size - min_size)
 
 def get_vertex_trace_indices(fig):
     """
@@ -25,24 +27,44 @@ def get_vertex_trace_indices(fig):
     """
     return [i for i, trace in enumerate(fig.data) if trace.name.startswith('Layer')]
 
-def extract_gate_labels(vs_data):
+def extract_gate_labels(data):
     gate_labels = []
     gate_count = {}
+    temp_count = {}
 
-    for instruction in vs_data["gates"]:
+    # count the occurrences of each gate
+    for instruction in data["gates"]:
         gate = instruction.upper()
-        # replace "P" with Φ for better visualization
-        if gate == "CP":
-            gate = "CΦ"  
         
-        # track gate occurrences for indexing
+        # replace "P" with Φ
+        if gate == "CP":
+            gate = "CΦ"
+        
         if gate in gate_count:
             gate_count[gate] += 1
         else:
             gate_count[gate] = 1
 
-        # add indexed gate name 
-        gate = f"{gate}{gate_count[gate]}"
-        gate_labels.append(gate)
+    # create gate labels, indexing only those that appear more than once
+    for instruction in data["gates"]:
+        gate = instruction.upper()
+        
+        if gate == "CP":
+            gate = "CΦ"
+        
+        # if the gate appears more than once, add an index
+        if gate_count[gate] > 1:
+            # increase a temporary count for gate label
+            if gate in temp_count:
+                temp_count[gate] += 1
+            else:
+                temp_count[gate] = 1
+            # index the gate label
+            gate_label = f"{gate}{temp_count[gate]}"
+        else:
+            # if the gate appears only once, use no indexing
+            gate_label = gate
+        
+        gate_labels.append(gate_label)
 
     return gate_labels
