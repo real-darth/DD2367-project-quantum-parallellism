@@ -35,9 +35,10 @@ def oracle_for_target_state(qc):
     sub_circuit.x(3)
     sub_circuit.x(2)
 
-    # apply multi-controlled Z
-    controls = list(range(1, qubits))
-    MCZ(qc, controls, 0)
+    # Apply multi-controlled Z
+    sub_circuit.h(0)         # Convert Z on |0> to an X-equivalent
+    sub_circuit.mcx([3, 2, 1], 0)  # Multi-controlled X (3 controls)
+    sub_circuit.h(0)         # Convert back to Z
 
     # undo the X gates
     sub_circuit.x(3)

@@ -5,7 +5,7 @@ from .grover_circuit import grover_iteration
 from .qpe_circuit import generate_qpe
 
 def build_example_circuit():
-    qc = generate_qpe()
+    qc = grover_iteration(4, 1) # generate_qpe()
     return qc
 
 def inteference_test():
