@@ -1,5 +1,6 @@
 import plotly.graph_objects as go
 import numpy as np
+import math
 from .utils import scale_amplitude_to_size
 from .utils import VISUALIZATION_THRESHOLD
 
@@ -47,7 +48,9 @@ def visualize_quantum_parallelism(data, computational_basis, fig=None):
             z=[old_phase, phase],
             opacity=np.clip(amplitude+.07, 0, 1),   # limit value in range 0 to 1
             mode='lines',
-            line=dict(width=line_width, color='blue' if phase == 0 else 'red'),  
+            line=dict(
+                width=line_width, 
+                color='blue' if math.isclose(phase, 0, abs_tol=1e-9) else 'red'),  
             name=f"Edge ({start} -> {end})"
         ))
 

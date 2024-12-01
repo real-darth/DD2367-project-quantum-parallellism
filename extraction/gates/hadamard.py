@@ -4,17 +4,18 @@ def HAD(qubit, previous_state_data, layer, new_state, amplitudes, phases, thresh
     edges = []
     # extract target qubit from gate info
     target_qubit = qubit[0]
+    stride = 2 ** target_qubit  # calcualte stride
 
     # apply the Hadamard gate to the target qubit
     for i in range(len(previous_state_data)):
         # calculate the target states after applying H
-        target_zero = i  # Target for |0>
-        target_one = i ^ (1 << target_qubit)  # Target for |1> (bit flip on target qubit)
-        
+        target_zero = i  # target for |0>
+        target_one = i ^ stride  # target for |1> (bit flip on target qubit with stride)
+
         #if np.abs(prev_state[i]) > threshold:
         #    print(f"State {i}: Amplitude {prev_state[i]} -> Targets {target_zero}, {target_one}")
 
-        if np.abs(previous_state_data[i]) > threshold:  # check if the previous state is significant
+        if np.abs(previous_state_data[i]) > threshold:
             previous_phase = np.angle(previous_state_data[i])
             # cross-check new state amplitudes
             if np.abs(new_state[target_zero]) > threshold:

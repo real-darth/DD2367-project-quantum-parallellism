@@ -16,7 +16,7 @@ def load_visualization_data(file_path):
 if __name__ == "__main__":
     # build circuit
     qc = build_example_circuit()
-
+    
     # extract visualization data
     vs_data = extract_quantum_data(qc)
 
@@ -26,6 +26,8 @@ if __name__ == "__main__":
 
     print("Total Work (Tw):", tw)
     print("Critical Path Length (T_infinity):", tinfinity)
+    # calculate parallelism
+    p = tw/tinfinity
 
     # save data to JSON
     #with open("visualization_data.json", "w") as f:
@@ -48,7 +50,7 @@ if __name__ == "__main__":
     gate_labels = extract_gate_labels(vs_data)
 
     # add UI elements
-    fig = add_ui_elements(fig, computational_basis, gate_labels, show_hierarchy=False)
+    fig = add_ui_elements(fig, computational_basis, gate_labels, tw, tinfinity, show_hierarchy=False)
 
     # save and display
     fig.write_html("quantum_plot.html", auto_open=True)

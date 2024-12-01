@@ -3,7 +3,7 @@ def NOT(qubit, prev_states, layer, amplitudes, phases, old_layer):
     Visualize the NOT gate, which swaps the states of qubits based on the given qubit.
 
     Args:
-        qubit: Tuple indicating which qubit is manipulated (e.g., (n_qubit,)).
+        qubit: Tuple indicating which qubit is manipulated (e.g., (target_qubit,)).
         prev_states: List of current states (indices).
         layer: Current layer index.
         amplitudes: List of amplitudes for the states.
@@ -15,10 +15,9 @@ def NOT(qubit, prev_states, layer, amplitudes, phases, old_layer):
     edges = []
 
     # get the qubit being manipulated
-    n_qubit = qubit[0]
-
-    # calculate stride based on the qubit manipulated (MSB = 0, LSB = n-1)
-    stride = 2 ** n_qubit
+    target_qubit = qubit[0]
+    # calculate stride based on the qubit manipulated
+    stride = 2 ** target_qubit
 
     for i in prev_states:
         # calculate the target state by XORing with stride

@@ -15,32 +15,15 @@ def generate_qpe():
     for i in range(n_phase_qubits):
         qc.h(i)
 
+    # controlled unitary operations (controlled rotations)
     repetitions = 1
     for qubit in range(n_phase_qubits):
         for i in range(repetitions):
             qc.cp(np.pi/4, qubit, 3); # the controlled phase rotation
         repetitions *= 2
 
-    # controlled unitary operations (controlled rotations)
-    #for q in range(n_phase_qubits):
-    #    angle = np.pi / 4**(q + 1)  # Rotation angle for the controlled-U
-    #    qc.cp(angle, q, n_phase_qubits)  # Controlled phase rotation
-
+    # inverse QFT (IQFT) on the phase register
     qft_dagger(qc, n_phase_qubits)
-
-    # Step 4: Inverse QFT (IQFT) on the phase register
-    # Reverse qubits order using swap
-    #for i in range(n_phase_qubits // 2):
-    #    qc.swap(i, n_phase_qubits - i - 1)
-
-    # Apply controlled rotations and Hadamard gates
-    #for q in range(n_phase_qubits):
-    #    for j in range(q):
-    #        qc.cp(-np.pi / 2**(q - j), j, q)  # Controlled-phase gates
-    #    qc.h(q)
-
-    # Step 5: Measure the phase register
-    #qc.measure(range(n_phase_qubits), range(n_phase_qubits))
 
     return qc
 

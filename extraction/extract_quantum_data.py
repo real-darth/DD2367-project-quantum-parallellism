@@ -46,7 +46,7 @@ def extract_quantum_data(qc, visualize_quantum_vector=False):
         #print("State phase", phases)
 
         # ---------------------------- VERTEX -------------------------------
-        # add new layer with non-zero states
+        # add new layer with amplitudes and phases vertex points
         new_layer = {
             "layer": layer,
             "amplitudes": amplitudes.tolist(),
