@@ -41,3 +41,21 @@ def calculate_tinfinity(vs_data):
             max_path_length = max(max_path_length, dfs((layer_idx, node_idx)))
 
     return max_path_length
+
+def calculate_max_parallelism(vs_data):
+    """Find the maximum number of threads in superposition."""
+    max_threads = 0
+    for layer in vs_data["layers"]:
+        # count non-zero amplitudes (active threads)
+        active_threads = sum(1 for amp in layer["amplitudes"] if amp > 0)
+        # compare if maximum has been found, keep searching all layers
+        max_threads = max(max_threads, active_threads)
+    return max_threads
+
+def calculate_parallelism_efficiency(tw, tinf, max_threads):
+    """Calculate the approximate parallelism utilization in the circuit."""
+    # parallelism
+    p = tw/tinf
+    # parallelism efficiency
+    efficiency = p/max_threads
+    return efficiency

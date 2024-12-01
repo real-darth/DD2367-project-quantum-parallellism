@@ -2,7 +2,7 @@ import numpy as np
 import json
 from circuits.example_circuit import build_example_circuit
 from extraction.extract_quantum_data import extract_quantum_data
-from extraction.measure_parallelism import calculate_tinfinity, calculate_tw
+from extraction.measure_parallelism import calculate_tinfinity, calculate_tw, calculate_max_parallelism, calculate_parallelism_efficiency
 from visualization.quantum_visualizer import visualize_quantum_parallelism
 from visualization.ui_elements import add_ui_elements
 from visualization.utils import extract_gate_labels
@@ -26,8 +26,11 @@ if __name__ == "__main__":
 
     print("Total Work (Tw):", tw)
     print("Critical Path Length (T_infinity):", tinfinity)
-    # calculate parallelism
-    p = tw/tinfinity
+    # calculate parallelism efficiency
+    max_threads = calculate_max_parallelism(vs_data)
+    print("Max parallelism found:", max_threads)
+    parallelism_efficiency = calculate_parallelism_efficiency(tw, tinfinity, max_threads)
+    print("Efficiency:", parallelism_efficiency)
 
     # save data to JSON
     #with open("visualization_data.json", "w") as f:
@@ -50,7 +53,7 @@ if __name__ == "__main__":
     gate_labels = extract_gate_labels(vs_data)
 
     # add UI elements
-    fig = add_ui_elements(fig, computational_basis, gate_labels, tw, tinfinity, show_hierarchy=False)
+    fig = add_ui_elements(fig, computational_basis, gate_labels, tw, tinfinity, parallelism_efficiency, show_hierarchy=False)
 
     # save and display
     fig.write_html("quantum_plot.html", auto_open=True)

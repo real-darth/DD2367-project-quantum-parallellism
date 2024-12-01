@@ -1,7 +1,7 @@
 from .utils import get_vertex_trace_indices
 import plotly.graph_objects as go
 
-def add_ui_elements(fig, computational_basis, gate_labels, tw, tinfinity, show_hierarchy=False):
+def add_ui_elements(fig, computational_basis, gate_labels, tw, tinfinity, parallelism_efficiency, show_hierarchy=False):
     num_gates = len(gate_labels)  # number of gates on the X-axis
     num_states = len(computational_basis)  # number of quantum states on the Y-axis
     
@@ -66,7 +66,8 @@ def add_ui_elements(fig, computational_basis, gate_labels, tw, tinfinity, show_h
             dict(text="Vertex<br>Text", x=0, xref="paper", y=1.00,
                  yref="paper", showarrow=False),
             dict(text=f"T_w: {tw}", x=0, y=0.90, showarrow=False),
-            dict(text=f"T_∞: {tinfinity}", x=0, y=0.88, showarrow=False)
+            dict(text=f"T_∞: {tinfinity}", x=0, y=0.88, showarrow=False),
+            dict(text=f"Efficiency: {parallelism_efficiency}", x=0, y=0.86, showarrow=False)
         ]
     )
 

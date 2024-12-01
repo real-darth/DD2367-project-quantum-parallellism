@@ -1,3 +1,5 @@
+#source: https://github.com/qiskit-community/qiskit-textbook/blob/main/content/ch-algorithms/quantum-phase-estimation.ipynb
+
 from qiskit import QuantumCircuit
 import numpy as np
 
@@ -9,7 +11,7 @@ def generate_qpe():
     qc = QuantumCircuit(n_phase_qubits + eigen_qubits, n_phase_qubits)
 
     # prepare the eigenstate |1⟩
-    qc.x(n_phase_qubits)  # Apply an X gate to the eigenstate qubit
+    qc.x(n_phase_qubits)  # X gate to the eigenstate qubit
 
     # apply HAD to the phase register
     for i in range(n_phase_qubits):
@@ -29,10 +31,9 @@ def generate_qpe():
 
 def qft_dagger(qc, n):
     """n-qubit QFTdagger the first n qubits in circ"""
-    # Don't forget the Swaps!
     for qubit in range(n//2):
         qc.swap(qubit, n-qubit-1)
     for j in range(n):
         for m in range(j):
-            qc.cp(-np.pi/float(2**(j-m)), m, j)
+            qc.cp(-np.pi/float(2 ** (j-m)), m, j)
         qc.h(j)
