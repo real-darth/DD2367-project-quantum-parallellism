@@ -9,7 +9,7 @@ source venv/scripts/activate
 For installing dependecies do 
 
 ```bash
-pip install .
+pip install -r requirements.txt
 ```
 
 ## Launch Windows
