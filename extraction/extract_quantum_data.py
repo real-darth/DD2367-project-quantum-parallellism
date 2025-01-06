@@ -25,11 +25,11 @@ def extract_quantum_data(qc, visualize_quantum_vector=False):
     # track the previous states
     previous_indexed_state = [0]
     old_layer = {"layer": 1, "amplitudes": [1.0], "phases": [0.0, 0.0]}
-    previous_state = state.data
+    previous_state_data = state.data
 
     # process each instruction in the circuit step by step
-    for layer, instruction in enumerate(qc.data):
-        layer += OFFSET
+    for layer_index, instruction in enumerate(qc.data):
+        layer_index += OFFSET
 
         gate = instruction.operation
         print("Running on gate", gate.name)
@@ -48,7 +48,7 @@ def extract_quantum_data(qc, visualize_quantum_vector=False):
         # ---------------------------- VERTEX -------------------------------
         # add new layer with amplitudes and phases vertex points
         new_layer = {
-            "layer": layer,
+            "layer": layer_index,
             "amplitudes": amplitudes.tolist(),
             "phases": phases.tolist(),
         }
@@ -57,14 +57,14 @@ def extract_quantum_data(qc, visualize_quantum_vector=False):
         # ---------------------------- GATES --------------------------------
         # gate-specific edge logic
         if gate.name == "h":
-            new_edges = HAD(qubits, previous_state, layer, state.data, amplitudes, phases, VISUALIZATION_THRESHOLD)
+            new_edges = HAD(qubits, previous_state_data, layer_index, state.data, amplitudes, phases, VISUALIZATION_THRESHOLD)
         elif gate.name == "x":
-            new_edges = NOT(qubits, previous_indexed_state, layer, amplitudes, phases, old_layer)
+            new_edges = NOT(qubits, previous_indexed_state, layer_index, amplitudes, phases, old_layer)
         elif gate.name == "swap":
-            new_edges = SWAP(qubits, previous_state, layer, amplitudes, phases, old_layer, VISUALIZATION_THRESHOLD)
+            new_edges = SWAP(qubits, previous_state_data, layer_index, amplitudes, phases, old_layer, VISUALIZATION_THRESHOLD)
         # any rotation on phases are visualized with the ROTATE function
         elif gate.name in ROTATION_GATE_NAMES:
-            new_edges = ROTATE(previous_indexed_state, layer, amplitudes, phases, old_layer)
+            new_edges = ROTATE(previous_indexed_state, layer_index, amplitudes, phases, old_layer)
         # ---------------------------- GATES --------------------------------
 
         # add vertecies, edges and gate label to data
@@ -75,7 +75,7 @@ def extract_quantum_data(qc, visualize_quantum_vector=False):
         # prepare next iteration
         previous_indexed_state = [i for i, amp in enumerate(amplitudes) if amp > VISUALIZATION_THRESHOLD]
         old_layer = new_layer
-        previous_state = state.data
+        previous_state_data = state.data
 
     # OPTIONAL: cirlce notation viusalizer 
     if (visualize_quantum_vector == True):

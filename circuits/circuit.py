@@ -4,9 +4,21 @@ import numpy as np
 from .grover_circuit import grover_iteration
 from .qpe_circuit import generate_qpe
 
-def build_example_circuit():
+# INSERT CIRCUIT LOGIC IN FUNCTION BELOW: #
+def build_circuit():
+    """
+    Create the circuit to analyze quantum parallelism. Add logic below
+
+    Returns:
+        The QuantumCircuit to analyze.
+    """
     #qc = grover_iteration(4, 1)
     qc = generate_qpe()
+    #qc = QuantumCircuit(1)
+    #qc.h(0)
+    #qc.z(0)
+    #qc.x(0)
+
     return qc
 
 def inteference_test():

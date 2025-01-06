@@ -1,6 +1,6 @@
 import numpy as np
 import json
-from circuits.example_circuit import build_example_circuit
+from circuits.circuit import build_circuit
 from extraction.extract_quantum_data import extract_quantum_data
 from extraction.measure_parallelism import calculate_tinfinity, calculate_tw, calculate_max_parallelism, calculate_parallelism_efficiency
 from visualization.quantum_visualizer import visualize_quantum_parallelism
@@ -15,7 +15,7 @@ def load_visualization_data(file_path):
 # main function
 if __name__ == "__main__":
     # build circuit
-    qc = build_example_circuit()
+    qc = build_circuit()
     
     # extract visualization data
     vs_data = extract_quantum_data(qc)
