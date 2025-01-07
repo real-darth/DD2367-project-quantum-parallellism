@@ -4,6 +4,7 @@ from qiskit import QuantumCircuit
 import numpy as np
 
 def generate_qpe():
+    "Generates a Quantum Phase Estimation (QPE) circuit for T-gate phase estimation"
     # number of qubits: 3 for the phase register, 1 for the eigenstate
     n_phase_qubits = 3
     eigen_qubits = 1

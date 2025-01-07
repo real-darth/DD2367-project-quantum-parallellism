@@ -1,3 +1,6 @@
+# Description: Utility functions for visualization.
+
+# Global Visualization Threshold constant for filtering out very small amplitudes in niche cases.
 VISUALIZATION_THRESHOLD = 0.01 #1e-6
 
 def scale_amplitude_to_size(amplitude, min_size, max_size):
@@ -28,6 +31,7 @@ def get_vertex_trace_indices(fig):
     return [i for i, trace in enumerate(fig.data) if trace.name.startswith('Layer')]
 
 def extract_gate_labels(data):
+    """Extract gate labels from the given data. Indexes gates that appear more than once."""
     gate_labels = []
     gate_count = {}
     temp_count = {}

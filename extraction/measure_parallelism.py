@@ -7,7 +7,7 @@ def calculate_tw(vs_data):
     total_work = 0
     for layer in vs_data["layers"]:
         total_work += sum(1 for amp in layer["amplitudes"] if amp > VISUALIZATION_THRESHOLD)
-    # TODO: always subtract one because of our START vertex?
+    # always subtract one because of our START vertex
     total_work -= 1
     return total_work
 

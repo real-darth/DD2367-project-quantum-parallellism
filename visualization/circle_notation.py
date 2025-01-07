@@ -1,3 +1,5 @@
+# code provided during quantum computing course, Stefano Markidis.
+
 import numpy as np
 import matplotlib
 from matplotlib import pyplot as plt, patches

@@ -32,6 +32,7 @@ if __name__ == "__main__":
     parallelism_efficiency = calculate_parallelism_efficiency(tw, tinfinity, max_threads)
     print("Efficiency:", parallelism_efficiency)
 
+    # optional: remove comments to save data to JSON-file
     # save data to JSON
     #with open("visualization_data.json", "w") as f:
     #    json.dump(vs_data, f)

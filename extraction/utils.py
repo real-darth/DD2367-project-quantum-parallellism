@@ -1,6 +1,7 @@
 from visualization.circle_notation import QubitSystem
 
 def visualize(vector, n = 3):
+    "Circle notation visualization of a quantum state vector"
     # initialize with n qubits
     qubit_system = QubitSystem(n_qubits=n)
 
@@ -11,6 +12,7 @@ def visualize(vector, n = 3):
     qubit_system.viz2()
 
 def create_start(visualization_data):
+    "Create the start layer for the visualization data"
     # starting layer (single vertex for |0>)
     visualization_data["layers"].append({
         "layer": 0,

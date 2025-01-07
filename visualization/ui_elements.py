@@ -2,6 +2,7 @@ from .utils import get_vertex_trace_indices
 import plotly.graph_objects as go
 
 def add_ui_elements(fig, computational_basis, gate_labels, tw, tinfinity, parallelism_efficiency, show_hierarchy=False):
+    """Add UI elements to the interactive quantum parallelism visualization. Plotly."""
     num_gates = len(gate_labels)  # number of gates on the X-axis
     num_states = len(computational_basis)  # number of quantum states on the Y-axis
     

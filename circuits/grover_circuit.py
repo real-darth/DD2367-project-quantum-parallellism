@@ -2,6 +2,7 @@ from qiskit import QuantumCircuit
 from .utils import MCZ
 
 def generate_circuit(n):
+    "Generates a Grover's algorithm circuit with n qubits"
     # generate circuit withb n qubits
     qc = QuantumCircuit(n)
     # apply Hadamard gate to each qubit, uniform superposition
@@ -29,6 +30,7 @@ def diffuse(qc, n):
         qc.h(i)
 
 def oracle_for_target_state(qc):
+    "Oracle for the target state"
     qubits = qc.num_qubits # get amount of qubits form circuit
     sub_circuit = QuantumCircuit(qubits, name="Oracle")
     # flip qubits to match |0011⟩ (X on q3 and q2 to target the '0' states)

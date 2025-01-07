@@ -61,7 +61,7 @@ def extract_quantum_data(qc, visualize_quantum_vector=False):
         elif gate.name == "x":
             new_edges = NOT(qubits, previous_indexed_state, layer_index, amplitudes, phases, old_layer)
         elif gate.name == "swap":
-            new_edges = SWAP(qubits, previous_state_data, layer_index, amplitudes, phases, old_layer, VISUALIZATION_THRESHOLD)
+            new_edges = SWAP(qubits, previous_indexed_state, layer_index, amplitudes, phases, old_layer, VISUALIZATION_THRESHOLD)
         # any rotation on phases are visualized with the ROTATE function
         elif gate.name in ROTATION_GATE_NAMES:
             new_edges = ROTATE(previous_indexed_state, layer_index, amplitudes, phases, old_layer)

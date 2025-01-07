@@ -10,6 +10,7 @@ LINE_MIN_SIZE = 0.01
 LINE_MAX_SIZE = 15
 
 def visualize_quantum_parallelism(data, computational_basis, fig=None):
+    """Visualize quantum parallelism using Plotly. Logic for edges and vertices."""
     if fig is None:
         fig = go.Figure()
 

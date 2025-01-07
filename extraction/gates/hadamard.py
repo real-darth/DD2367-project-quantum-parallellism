@@ -1,6 +1,21 @@
 import numpy as np
 
 def HAD(qubit, previous_state_data, layer, new_state, amplitudes, phases, threshold=1e-10):
+    """
+    Visualize the Hadamard gate, which applies a Hadamard transformation to the target qubit,
+    creating superposition creating more edges, or reverting superposition collapsing edges.
+    
+    Args:
+        qubit (tuple): Indicating which qubit is manipulated (e.g., (target_qubit,)).
+        previous_state_data (list): Previous states data.
+        layer (int): Current layer index.
+        new_state (list): New state data.
+        amplitudes (list): Precomputed amplitudes for the evolved state.
+        phases (list): Precomputed phases for the evolved state.
+
+    Returns:
+        edges (list): List of dictionaries representing edges with transitions, amplitudes, and phases.
+    """
     edges = []
     # extract target qubit from gate info
     target_qubit = qubit[0]
@@ -15,9 +30,11 @@ def HAD(qubit, previous_state_data, layer, new_state, amplitudes, phases, thresh
         #if np.abs(prev_state[i]) > threshold:
         #    print(f"State {i}: Amplitude {prev_state[i]} -> Targets {target_zero}, {target_one}")
 
+        # chek if the previous state have a positive amplitude
         if np.abs(previous_state_data[i]) > threshold:
+            # get the previous phase
             previous_phase = np.angle(previous_state_data[i])
-            # cross-check new state amplitudes
+            # check new target state amplitudes, make sure they have a positive amplitude
             if np.abs(new_state[target_zero]) > threshold:
                 edges.append({
                     "start": (layer, i),
@@ -26,6 +43,7 @@ def HAD(qubit, previous_state_data, layer, new_state, amplitudes, phases, thresh
                     "phase": phases[target_zero],
                     "old_phase": previous_phase
                 })
+            # check other target state amplitude
             if np.abs(new_state[target_one]) > threshold:
                 edges.append({
                     "start": (layer, i),

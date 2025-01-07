@@ -1,13 +1,23 @@
 import numpy as np
 
-def SWAP(qubits, prev_state, layer, amplitudes, phases, old_layer, threshold=1e-10):
+def SWAP(qubits, previous_state_index, layer, amplitudes, phases, old_layer, threshold=1e-10):
+    """
+    SWAP gate visualization, which swaps the states of two qubits based on the given qubits.
+
+    Args:
+        qubits (list): Indicating which qubits are manipulated (e.g., [q1, q2]).
+        previous_state_index (list): Previous states indices.
+        layer (int): Current layer index.
+        amplitudes (list): Precomputed amplitudes for the evolved state.
+        phases (list): Precomputed phases for the evolved state.
+    """
     edges = []
     # extract the two qubits being swapped
     q1 = qubits[0]
     q2 = qubits[1]
     
     # apply the SWAP gate
-    for i in range(0, len(prev_state)):
+    for i in previous_state_index:
         # determine which qubits are swapped
         bit1 = (i >> q1) & 1  # extract the bit at position q1
         bit2 = (i >> q2) & 1  # extract the bit at position q2

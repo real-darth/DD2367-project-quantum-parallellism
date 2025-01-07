@@ -1,9 +1,9 @@
-def ROTATE(prev_state, layer, amplitudes, phases, old_layer):
+def ROTATE(previous_state_index, layer, amplitudes, phases, old_layer):
     """
     Visualize any controlled phase rotation.
 
     Args:
-        prev_state (list): Previous state, in complex value.
+        previous_state_index (list): Previous states indices.
         layer (int): Current layer index.
         amplitudes (list): Precomputed amplitudes for the evolved state.
         phases (list): Precomputed phases for the evolved state.
@@ -13,7 +13,7 @@ def ROTATE(prev_state, layer, amplitudes, phases, old_layer):
     """
     edges = []
 
-    for i in prev_state:
+    for i in previous_state_index:
         # create the edge with precomputed phase
         edge = {
             "start": (layer, i),
