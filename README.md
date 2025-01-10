@@ -1,5 +1,6 @@
 # DD2375 Project: Visualizing Quantum Parallelism
 This is the github repository for the Quantum Computing project part of the course DD2375. This project aims to automatically visualize and measure the quantum parallelism part of quantum algorithms. The following section contains information on the repo structure as well as how to run and visualize your own circuits.
+![aa_vis_3d_opt](https://github.com/user-attachments/assets/6332fafc-07a6-4b1f-903a-b13cab784875)
 
 # Installation
 To install a fresh version, you can create a virtual environment:
@@ -35,7 +36,7 @@ python main_script.py
 ```
 This will launch the application. First, it will run the main loop, extracting data from each unitary operation in the circuit. Secondly it will calculate the quantum parallelism. Thirdly, and often the most time-consuming part, it will open a new HTML window to start rendering the graph.
 
-By default, a 4-qubit system of a grover iteration will be visualized. **Please see read [here](#visualizing-your-own-circuit)** or go down below for instructions on how to visualize your own circuits.
+By default, a 4-qubit system of a grover iteration will be visualized, which is the algorithm in the GIF above. **Please see read [here](#visualizing-your-own-circuit)** or go down below for instructions on how to visualize your own circuits.
 
 # Repository
  * [circuits](./circuits)
