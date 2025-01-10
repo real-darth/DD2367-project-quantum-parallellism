@@ -35,7 +35,7 @@ python main_script.py
 ```
 This will launch the application. First, it will run the main loop, extracting data from each unitary operation in the circuit. Secondly it will calculate the quantum parallelism. Thirdly, and often the most time-consuming part, it will open a new HTML window to start rendering the graph.
 
-By default, a 4-qubit system of a grover iteration will be visualized. **Please see the [Adding Circuit](link)** below for instructions on how to visualize your own circuits.
+By default, a 4-qubit system of a grover iteration will be visualized. **Please see read [here](#visualizing-your-own-circuit)** or go down below for instructions on how to visualize your own circuits.
 
 # Repository
  * [circuits](./circuits)
@@ -49,7 +49,7 @@ By default, a 4-qubit system of a grover iteration will be visualized. **Please 
  * [main_script.py](./main_script.py)
  * [README.md](./README.md)
 
-## [Adding your own Circuit ](#link)
+## Visualizing your own Circuit
 The [circuits](./circuits) directory contains the [```circuit.py```](./circuits/circuit.py) script where the user creates their circuit to visualize. Other scripts can be created in the same directory to keep circuits separated and structured, but they must be imported into the circuit script.
 
 ## Saving data as JSON
