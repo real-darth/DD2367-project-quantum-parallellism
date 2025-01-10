@@ -27,8 +27,14 @@ To launch an already created virtual environment (with all dependencies installe
 source venv/scripts/activate
 ```
 
-# Repository
+# Running Visualizer
+To run the visualizer, use the command:
+```bash
+python main_script.py
+```
+This will launch the application. First, it will run the main loop, extracting data from each unitary operation in the circuit. Secondly it will calculate the quantum parallelism. Thirdly, and often the most time-consuming part, it will open a new HTML window to start rendering the graph.
 
+# Repository
  * [circuits](./circuits)
    * [circuit.py](./circuits/circuit.py)
    * ...
@@ -40,12 +46,8 @@ source venv/scripts/activate
  * [main_script.py](./main_script.py)
  * [README.md](./README.md)
 
-## Running Visualizer
-To run the visualizer, use the command:
-```bash
-python main_script.py
-```
-This will launch the application. First, it will run the main loop, extracting data from each unitary operation in the circuit. Secondly it will calculate the quantum parallelism. Thirdly, and often the most time-consuming part, it will open a new HTML window to start rendering the graph.
+## Saving data as JSON
+The [main_script.py](./main_script.py) has commented code for saving the visualization data as a JSON on row 37. This could be usefull if you dont want generate new data and reuse old. To use the function of saving/loading data you can uncomment the JSON section and comment/remove the ```extract_quantum_data``` function. Then you can use the ```load_visualization_data``` function to load your saved data.
 
 ## Adding your own Circuit
 The [circuits](./circuits) directory contains the [```circuit.py```](./circuits/circuit.py) script where the user creates their circuit to visualize. Other scripts can be created in the same directory to keep circuits separated and structured, but they must be imported into the circuit script.

@@ -37,11 +37,8 @@ if __name__ == "__main__":
     #with open("visualization_data.json", "w") as f:
     #    json.dump(vs_data, f)
 
-    #if True:
-    #    exit()
-
     # load json
-    #data = load_visualization_data('visualization_data.json')
+    #vs_data = load_visualization_data('visualization_data.json')
 
     # generate computational basis states for UI
     num_states = max(len(layer['amplitudes']) for layer in vs_data['layers'])
