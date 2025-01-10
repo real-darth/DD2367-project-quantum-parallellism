@@ -28,11 +28,14 @@ source venv/scripts/activate
 ```
 
 # Running Visualizer
+## Visualize
 To run the visualizer, use the command:
 ```bash
 python main_script.py
 ```
 This will launch the application. First, it will run the main loop, extracting data from each unitary operation in the circuit. Secondly it will calculate the quantum parallelism. Thirdly, and often the most time-consuming part, it will open a new HTML window to start rendering the graph.
+
+By default, a 4-qubit system of a grover iteration will be visualized. **Please see the [Adding Circuit](link)** below for instructions on how to visualize your own circuits.
 
 # Repository
  * [circuits](./circuits)
@@ -46,11 +49,11 @@ This will launch the application. First, it will run the main loop, extracting d
  * [main_script.py](./main_script.py)
  * [README.md](./README.md)
 
+## [Adding your own Circuit ](#link)
+The [circuits](./circuits) directory contains the [```circuit.py```](./circuits/circuit.py) script where the user creates their circuit to visualize. Other scripts can be created in the same directory to keep circuits separated and structured, but they must be imported into the circuit script.
+
 ## Saving data as JSON
 The [main_script.py](./main_script.py) has commented code for saving the visualization data as a JSON on row 37. This could be usefull if you dont want generate new data and reuse old. To use the function of saving/loading data you can uncomment the JSON section and comment/remove the ```extract_quantum_data``` function. Then you can use the ```load_visualization_data``` function to load your saved data.
-
-## Adding your own Circuit
-The [circuits](./circuits) directory contains the [```circuit.py```](./circuits/circuit.py) script where the user creates their circuit to visualize. Other scripts can be created in the same directory to keep circuits separated and structured, but they must be imported into the circuit script.
 
 **NOTE:** The visualization can become laggy when using too many qubits. You can test for yourself but I personally recommend to keep it below 6 to 7 qubits.
 
