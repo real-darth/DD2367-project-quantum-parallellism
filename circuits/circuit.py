@@ -16,9 +16,9 @@ def build_circuit():
     #qc = QuantumCircuit(3)
 
     # Example 1: Grover's Algorithm
-    #qc = grover_iteration(4, 1)
+    qc = grover_iteration(4, 1)
     # Example 2: Quantum Phase Estimation
-    qc = generate_qpe()
+    #qc = generate_qpe()
     return qc
 
 def inteference_test():
