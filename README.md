@@ -1,5 +1,5 @@
-# DD2375 Project: Visualizing Quantum Parallelism
-This is the github repository for the Quantum Computing project part of the course DD2375. This project aims to automatically visualize and measure the quantum parallelism part of quantum algorithms. The following section contains information on the repo structure as well as how to run and visualize your own circuits.
+# DD2367 Project: Visualizing Quantum Parallelism
+This is the github repository for the Quantum Computing project part of the course DD2367. This project aims to automatically visualize and measure the quantum parallelism part of quantum algorithms. The following section contains information on the repo structure as well as how to run and visualize your own circuits.
 ![aa_vis_3d_opt](https://github.com/user-attachments/assets/6332fafc-07a6-4b1f-903a-b13cab784875)
 
 # Installation
